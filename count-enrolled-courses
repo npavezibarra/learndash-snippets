@@ -1,0 +1,15 @@
+function count_logged_in_user_enrolled_courses() {
+  if ( is_user_logged_in() ) {
+      $user_id = get_current_user_id();
+      $enrolled_courses = learndash_user_get_enrolled_courses( $user_id );
+      
+      // Return the count of enrolled courses.
+      return count( $enrolled_courses );
+  } else {
+      return 'User is not logged in.';
+  }
+}
+
+// Example usage
+$enrolled_courses_count = count_logged_in_user_enrolled_courses();
+echo 'Number of enrolled courses: ' . $enrolled_courses_count; // This you can change
