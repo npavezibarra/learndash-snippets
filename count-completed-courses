@@ -1,0 +1,26 @@
+function echo_number_of_completed_courses() {
+  if ( is_user_logged_in() ) {
+      $user_id = get_current_user_id();
+      $enrolled_courses = learndash_user_get_enrolled_courses($user_id);
+      $completed_courses_count = 0;
+
+      foreach ( $enrolled_courses as $course_id ) {
+          $course_progress = learndash_course_progress(array(
+              'user_id'   => $user_id,
+              'course_id' => $course_id,
+              'array'     => true
+          ));
+
+          if ( isset($course_progress['percentage']) && intval($course_progress['percentage']) == 100 ) {
+              $completed_courses_count++;
+          }
+      }
+
+      echo "Number of completed courses: " . $completed_courses_count;
+  } else {
+      echo "User is not logged in.";
+  }
+}
+
+// Hook this function to an action where you want to display the number of completed courses
+add_action('wp_footer', 'echo_number_of_completed_courses');
